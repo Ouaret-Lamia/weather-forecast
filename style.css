@@ -1,11 +1,54 @@
-
+.searchDiv{
+    display: flex;
+    justify-content: center;
+    gap: 1%;
+    padding-top: 3%;
+    input{
+        border: solid #d1d1d1 1px;
+        border-radius: 5pt;
+        background-color: #f6f6f6;
+        padding: 8pt 15pt;
+        font-size: 16px;
+        height: 15pt;
+    }
+    button{
+        height: 45px;
+        width: 45px;
+        border: solid #d1d1d1 1px;
+        border-radius: 30pt;
+        padding: 1%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        img{
+            height: 15pt;
+        }
+    }
+}
 .mainDiv{
     display: grid;
     grid-template-rows: repeat(2, minmax(0, 1fr));
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 5%;
-    padding-top: 5%;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    /* gap: 5%; */
+    padding-top: 2%;
+    div{
+        background-color: #f6f6f6;
+        margin: 2%;
+        padding: 5% 8%;
+        border-radius: 10pt;
+    }
 }
-.stats, .map{
-    grid-column: span 2 / span 2;
+.stats, .forecast{
+    grid-column: span 3 / span 5;
+}
+.map{
+    grid-column: span 2 / span 5;
+}
+.weather{
+    grid-column: span 2 / span 5;
+    margin-left: 50%;
+    img{
+        width: 45%;
+    }
 }
