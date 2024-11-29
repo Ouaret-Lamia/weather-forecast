@@ -1,3 +1,6 @@
+body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 .searchDiv{
     display: flex;
     justify-content: center;
@@ -35,7 +38,7 @@
     div{
         background-color: #f6f6f6;
         margin: 2%;
-        padding: 5% 8%;
+        padding: 5% ;
         border-radius: 10pt;
     }
 }
@@ -47,8 +50,18 @@
 }
 .weather{
     grid-column: span 2 / span 5;
-    margin-left: 50%;
+    display: flex;
+    justify-content: space-around;
+    /* align-items: center; */
+    /* gap: 8%; */
     img{
         width: 45%;
+    }
+    .temp{
+        font-size: 35pt;
+        margin-bottom: 0;
+    }
+    .state{
+        margin: 0;
     }
 }

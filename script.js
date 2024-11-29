@@ -10,6 +10,9 @@ async function getAPI(city) {
     const data = await result.json();
     console.log(data);
 
+    document.querySelector(".temp").innerHTML = `${data.main.temp}°C`;
+    document.querySelector(".state").innerHTML = `Today it's <b>${data.weather[0].main}</b> in ${data.name}`;
+
     if(data.weather[0].main == "Clouds"){
         weather.src = "images/cloud.png";
     } else if(data.weather[0].main == "Clear"){
@@ -26,5 +29,6 @@ async function getAPI(city) {
 }
 
 searchBtn.addEventListener("click", () =>{
-    getAPI(cityValue.value);
+    getAPI("setif");
+    // getAPI(cityValue.value);
 })
