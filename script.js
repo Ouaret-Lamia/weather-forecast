@@ -22,9 +22,11 @@ async function getAPI(city) {
     const forecastRes = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&cnt=7&appid=${apiKey}&units=metric`);
     const forecastData = await forecastRes.json();
     console.log(forecastData);
+    
     forecast.innerHTML = "";
     forecastData.list.forEach(f => {
         const newElement = document.createElement("div");
+
         const icon = document.createElement("img");
         weatherIconDisplay(f.weather[0].main, icon);
         newElement.appendChild(icon);
@@ -39,9 +41,6 @@ async function getAPI(city) {
         newElement.appendChild(time);
 
         forecast.appendChild(newElement);
-
-        // const hr = document.createElement("hr");
-        // forecast.appendChild(hr);
     });
     
 }

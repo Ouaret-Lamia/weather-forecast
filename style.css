@@ -1,11 +1,13 @@
 body{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
 .searchDiv{
     display: flex;
     justify-content: center;
     gap: 1%;
     padding-top: 2%;
+
     input{
         border: solid #d1d1d1 1px;
         border-radius: 50pt;
@@ -14,6 +16,7 @@ body{
         font-size: 16px;
         height: 15pt;
     }
+
     button{
         height: 45px;
         width: 45px;
@@ -29,11 +32,13 @@ body{
         }
     }
 }
+
 .mainDiv{
     display: grid;
     grid-template-rows: repeat(2, minmax(0, 1fr));
     grid-template-columns: repeat(5, minmax(0, 1fr));
     padding-top: 2%;
+
     div{
         background-color: #f6f6f6;
         margin: 2%;
@@ -41,19 +46,16 @@ body{
         border-radius: 10pt;
     }
 }
+
 .stats{
     grid-column: span 3 / span 5;
 }
-.map{
-    grid-column: span 2 / span 5;
-    height: 250px;
-}
+
 .weather{
     grid-column: span 2 / span 5;
     display: flex;
     justify-content: space-around;
-    /* align-items: center; */
-    /* gap: 8%; */
+
     img{
         width: 45%;
         height: 70%;
@@ -66,6 +68,7 @@ body{
         margin: 0;
     }
 }
+
 .forecast{
     grid-column: span 3 / span 5;
 
@@ -74,8 +77,6 @@ body{
         padding: 0;
         display: flex;
         overflow: auto;
-        /* display: grid;
-        grid-template-columns: repeat(7, minmax(0, 1fr)); */
         gap: .5%;
 
         div{
@@ -88,4 +89,9 @@ body{
             }
         }
     }
+}
+
+.map{
+    grid-column: span 2 / span 5;
+    height: 250px;
 }
