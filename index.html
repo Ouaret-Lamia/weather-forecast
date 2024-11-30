@@ -1,36 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <link rel="stylesheet" href="style.css">
-    <title>Weather forecast</title>
-</head>
-<body>
-    <div class="searchDiv">
-        <input type="text" placeholder="Enter your city name"/>
-        <button><img src="images/search.png" alt="Search"></button>
-    </div>
-    <div class="mainDiv">
-        <div class="weather">
-            <img src="images/cloud.png" alt="Weather img" class="weather_icon">
-            <div class="display">
-                <h1 class="temp">15.42</h1>
-                <p class="state">Today it's Clear in setif</p>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"></script>
+        <title>Weather forecast</title>
+    </head>
+    <body>
+        <div class="searchDiv">
+            <input type="text" placeholder="Enter your city name"/>
+            <button><img src="images/search.png" alt="Search"></button>
+        </div>
+        <div class="mainDiv">
+            <div class="weather">
+                <img src="images/cloud.png" alt="Weather img" class="weather_icon">
+                <div class="display">
+                    <h1 class="temp">15.42</h1>
+                    <p class="state">Today it's Clear in setif</p>
+                </div>
+            </div>
+            <div class="stats">
+                these are my stats
+            </div>
+            <div class="forecast">
+                <h4>Forecast at 3 hour intervals :</h4>
+                <div class="forecastData"></div>
+            </div>
+            <div class="map" id="map">
+                
             </div>
         </div>
-        <div class="stats">
-            these are my stats
-        </div>
-        <div class="forecast">
-            this is the forecast for the future
-        </div>
-        <div class="map">
-            and this is the map of where this city is
-        </div>
-    </div>
 
-    <script src="script.js"></script>
-</body>
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script src="script.js"></script>
+    </body>
 </html>
