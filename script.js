@@ -68,49 +68,55 @@ function weatherIconDisplay(state, element){
 
 
 // _____________________________ Charts ____________________________
-// Data for the charts
-const labels = ['Day 1']; // X-axis labels
-const humidityData = [60]; // Humidity data
-const pressureData = [60, 40]; // Pressure data (remaining percentage)
+const labels = ['Speed', 'Gust']; 
+const windData = [60, 55]; 
+const pressureData = [60, 40]; 
 
-// Humidity (Bar Chart)
+
 const humidityCtx = document.getElementById('wind');
 new Chart(humidityCtx, {
     type: 'bar',
     data: {
         labels: labels,
         datasets: [{
-            label: 'Wind speed ',
-            data: humidityData,
-            backgroundColor: 'rgba(54, 162, 235, 0.6)',
-            borderColor: 'rgba(54, 162, 235, 1)',
+            barThickness: 100,
+            label: 'speed',
+            data: windData,
+            backgroundColor: ['rgba(54, 162, 235, 0.4)' ,'rgba(255, 99, 132, 0.4)'],
+            borderColor: [ 'rgba(54, 162, 235)', 'rgba(255, 99, 132)'],
             borderWidth: 1
         }]
     },
     options: {
         scales: {
+            x: {
+                stacked: true
+            },
             y: {
+                stacked: true,
                 beginAtZero: true
             }
         }
     }
 });
 
-// Pressure (Half Doughnut Chart)
+
 const pressureCtx = document.getElementById('pressure').getContext('2d');
 new Chart(pressureCtx, {
     type: 'doughnut',
     data: {
-        labels: ['Pressure', 'Remaining'],
+        labels: ['Pressure'],
         datasets: [{
             data: pressureData,
-            backgroundColor: ['rgba(255, 159, 64, 0.6)', 'rgba(201, 203, 207, 0.2)'],
+            backgroundColor: ['rgba(54, 162, 235, 0.6)', 'rgba(201, 203, 207, 0.2)'],
             hoverOffset: 4
         }]
     },
     options: {
         rotation: -90, // Rotate to start from the top
-        circumference: 180 // Limit to half-circle
+        circumference: 180, // Limit to half-circle
+        responsive: false, // Disable responsiveness
+        maintainAspectRatio: false // Allow custom height/width
     }
 });
 
