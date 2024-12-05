@@ -14,20 +14,40 @@
             <button><img src="images/search.png" alt="Search"></button>
         </div>
         <div class="mainDiv">
-            <div class="weather">
-                <img src="images/cloud.png" alt="Weather img" class="weather_icon">
-                <div class="display">
-                    <h1 class="temp">15.42</h1>
-                    <p class="state">Today it's Clear in setif</p>
+            <div class="weatherDiv">
+                <div class="weather">
+                    <img src="images/cloud.png" alt="Weather img" class="weather_icon">
+                    <div class="display">
+                        <h1 class="temp">15.42</h1>
+                        <p class="state">Today it's Clear in setif</p>
+                    </div>
+                </div>
+                <div class="weatherInfo">
+                    <h3>Feels like :</h3>
+                    <h3 id="feelLike"></h3>
+                </div>
+                <div class="weatherInfo">
+                    <h3>Humidity :</h3>
+                    <h3 id="humidity"></h3>
                 </div>
             </div>
 
             <div class="stats">
                 <div>
+                    <h4>Wind Statistics</h4>
                     <canvas id="wind"></canvas>
+                    <div class="windData">
+                        <p>Wind speed : </p>
+                        <h2 id="windSpeed"></h2>
+                    </div>
                 </div>
                 <div>
+                    <h4>Pressure statistics</h4>
                     <canvas id="pressure"></canvas>
+                    <div class="windData">
+                        <p>Pressure : </p>
+                        <h2 id="pressureVal"></h2>
+                    </div>
                 </div>
             </div>
 

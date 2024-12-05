@@ -7,6 +7,10 @@ const weather = document.querySelector(".weather_icon");
 
 const forecast = document.querySelector(".forecastData")
 
+let windChart = null;
+let pressureChart = null;
+let mapInstance = null; // To keep track of the map instance
+
 async function getAPI(city) {
     const result = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
     const data = await result.json();
@@ -14,10 +18,14 @@ async function getAPI(city) {
 
     document.querySelector(".temp").innerHTML = `${data.main.temp}°C`;
     document.querySelector(".state").innerHTML = `<b>${data.weather[0].main}</b> in ${data.name}`;
-
     weatherIconDisplay(data.weather[0].main, weather);
+    document.querySelector("#feelLike").innerHTML = `${data.main.feels_like}°C`;
+    document.querySelector("#humidity").innerHTML = `${data.main.humidity}`;
 
-    displayMap(data.coord.lat, data.coord.lon);
+    updateWindChart(data.wind.speed);
+    updatePressureChart(data.main.pressure);
+
+    updateMap(data.coord.lat, data.coord.lon);
 
     const forecastRes = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&cnt=7&appid=${apiKey}&units=metric`);
     const forecastData = await forecastRes.json();
@@ -42,100 +50,108 @@ async function getAPI(city) {
 
         forecast.appendChild(newElement);
     });
-    
 }
 
-searchBtn.addEventListener("click", () =>{
-    getAPI("setif");
-    // getAPI(cityValue.value);
-})
+searchBtn.addEventListener("click", () => {
+    getAPI(cityValue.value);
+});
 
-function weatherIconDisplay(state, element){
-    if(state == "Clouds"){
+function weatherIconDisplay(state, element) {
+    if (state == "Clouds") {
         element.src = "images/cloud.png";
-    } else if(state == "Clear"){
+    } else if (state == "Clear") {
         element.src = "images/clear.png";
-    } else if(state == "Rain"){
+    } else if (state == "Rain") {
         element.src = "images/rain.png";
-    } else if(state == "Drizzle"){
+    } else if (state == "Drizzle") {
         element.src = "images/drizzle.png";
-    } else if(state == "Mist"){
+    } else if (state == "Mist") {
         element.src = "images/mist.png";
-    } else if(state == "Snow"){
+    } else if (state == "Snow") {
         element.src = "images/snow.png";
-    } 
+    }
 }
 
-
-// _____________________________ Charts ____________________________
-const labels = ['Speed', 'Gust']; 
-const windData = [60, 55]; 
-const pressureData = [60, 40]; 
-
-
-const humidityCtx = document.getElementById('wind');
-new Chart(humidityCtx, {
-    type: 'bar',
-    data: {
-        labels: labels,
-        datasets: [{
-            barThickness: 100,
-            label: 'speed',
-            data: windData,
-            backgroundColor: ['rgba(54, 162, 235, 0.4)' ,'rgba(255, 99, 132, 0.4)'],
-            borderColor: [ 'rgba(54, 162, 235)', 'rgba(255, 99, 132)'],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            x: {
-                stacked: true
+function updateWindChart(speed) {
+    if (windChart) {
+        windChart.destroy();
+    }
+    const labels = ['Speed'];
+    const windData = [speed];
+    const windCtx = document.getElementById('wind');
+    windChart = new Chart(windCtx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                barThickness: 80,
+                data: windData,
+                backgroundColor: 'rgba(54, 162, 235, 0.4)',
+                borderColor: 'rgba(54, 162, 235)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: false
+                }
             },
-            y: {
-                stacked: true,
-                beginAtZero: true
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
             }
         }
+    });
+    document.querySelector("#windSpeed").innerHTML = `${speed} km/h`;
+}
+
+function updatePressureChart(p) {
+    if (pressureChart) {
+        pressureChart.destroy();
     }
-});
+    const pressureData = [p, 5000 - p];
+    const pressureCtx = document.getElementById('pressure').getContext('2d');
+    pressureChart = new Chart(pressureCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Pressure'],
+            datasets: [{
+                data: pressureData,
+                backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(201, 203, 207, 0.2)'],
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            rotation: -90,
+            circumference: 180,
+            responsive: false,
+            maintainAspectRatio: false
+        }
+    });
+    document.querySelector("#pressureVal").innerHTML = `${p} pascal`
+}
 
-
-const pressureCtx = document.getElementById('pressure').getContext('2d');
-new Chart(pressureCtx, {
-    type: 'doughnut',
-    data: {
-        labels: ['Pressure'],
-        datasets: [{
-            data: pressureData,
-            backgroundColor: ['rgba(54, 162, 235, 0.6)', 'rgba(201, 203, 207, 0.2)'],
-            hoverOffset: 4
-        }]
-    },
-    options: {
-        rotation: -90, // Rotate to start from the top
-        circumference: 180, // Limit to half-circle
-        responsive: false, // Disable responsiveness
-        maintainAspectRatio: false // Allow custom height/width
+function updateMap(lat, lon) {
+    if (mapInstance) {
+        mapInstance.remove(); // Clean up the previous map instance
     }
-});
-
-
-
-// _________________________ map ___________________________
-function displayMap(lat, lon){
-    const map = L.map('map', {
-        center: [lat, lon],  
+    mapInstance = L.map('map', {
+        center: [lat, lon],
         zoom: 13,
         zoomControl: false,
-        attributionControl: false 
+        attributionControl: false
     });
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19
-    }).addTo(map);
+    }).addTo(mapInstance);
 
-    const marker = L.marker([lat, lon]).addTo(map)
-        .openPopup();
-
+    L.marker([lat, lon]).addTo(mapInstance).openPopup();
 }
