@@ -7,10 +7,6 @@ const weather = document.querySelector(".weather_icon");
 
 const forecast = document.querySelector(".forecastData")
 
-let windChart = null;
-let pressureChart = null;
-let mapInstance = null; // To keep track of the map instance
-
 async function getAPI(city) {
     const result = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
     const data = await result.json();
@@ -22,10 +18,10 @@ async function getAPI(city) {
     document.querySelector("#feelLike").innerHTML = `${data.main.feels_like}°C`;
     document.querySelector("#humidity").innerHTML = `${data.main.humidity}`;
 
-    updateWindChart(data.wind.speed);
-    updatePressureChart(data.main.pressure);
+    windChartDisplay(data.wind.speed);
+    pressureChartDisplay(data.main.pressure);
 
-    updateMap(data.coord.lat, data.coord.lon);
+    mapDisplay(data.coord.lat, data.coord.lon);
 
     const forecastRes = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&cnt=7&appid=${apiKey}&units=metric`);
     const forecastData = await forecastRes.json();
@@ -72,7 +68,8 @@ function weatherIconDisplay(state, element) {
     }
 }
 
-function updateWindChart(speed) {
+let windChart = null;
+function windChartDisplay(speed) {
     if (windChart) {
         windChart.destroy();
     }
@@ -107,7 +104,8 @@ function updateWindChart(speed) {
     document.querySelector("#windSpeed").innerHTML = `${speed} km/h`;
 }
 
-function updatePressureChart(p) {
+let pressureChart = null;
+function pressureChartDisplay(p) {
     if (pressureChart) {
         pressureChart.destroy();
     }
@@ -138,9 +136,10 @@ function updatePressureChart(p) {
     document.querySelector("#pressureVal").innerHTML = `${p} pascal`
 }
 
-function updateMap(lat, lon) {
+let mapInstance = null;
+function mapDisplay(lat, lon) {
     if (mapInstance) {
-        mapInstance.remove(); // Clean up the previous map instance
+        mapInstance.remove();
     }
     mapInstance = L.map('map', {
         center: [lat, lon],
