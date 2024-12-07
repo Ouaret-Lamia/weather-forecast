@@ -1,17 +1,22 @@
 const apiKey = "f39a8549e82ca5f22d9925c08eafeae0";
 
 const cityValue = document.querySelector(".searchDiv input");
-const searchBtn = document.querySelector(".searchDiv button");
+const searchBtn = document.querySelector(".searchBtn");
+const locBtn = document.querySelector(".locBtn");
 
 const weather = document.querySelector(".weather_icon");
 
 const forecast = document.querySelector(".forecastData")
 
-async function getAPI(city) {
+async function getAPI(city=null, lat=null, lon=null) {
     document.querySelector(".mainDiv").style.cssText = 'display: grid;';
     document.querySelector(".waiting").style.cssText = 'display: none;';
 
-    const result = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
+    let result;
+    if(city)
+        result = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
+    else
+        result = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`)
     const data = await result.json();
     console.log(data);
 
@@ -26,7 +31,12 @@ async function getAPI(city) {
 
     mapDisplay(data.coord.lat, data.coord.lon);
 
-    const forecastRes = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&cnt=7&appid=${apiKey}&units=metric`);
+    let forecastRes;
+    if(city)
+        forecastRes = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&cnt=7&appid=${apiKey}&units=metric`);
+    else
+        forecastRes = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&cnt=7&appid=${apiKey}&units=metric`)
+    
     const forecastData = await forecastRes.json();
     console.log(forecastData);
     
@@ -54,21 +64,29 @@ async function getAPI(city) {
 searchBtn.addEventListener("click", () => {
     getAPI(cityValue.value);
 });
+locBtn.addEventListener("click", () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(currentPosition);
+    }
+})
+
+function currentPosition(position){
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+    getAPI(null,lat,lon);
+}
+
 
 function weatherIconDisplay(state, element) {
-    if (state == "Clouds") {
-        element.src = "images/cloud.png";
-    } else if (state == "Clear") {
-        element.src = "images/clear.png";
-    } else if (state == "Rain") {
-        element.src = "images/rain.png";
-    } else if (state == "Drizzle") {
-        element.src = "images/drizzle.png";
-    } else if (state == "Mist") {
-        element.src = "images/mist.png";
-    } else if (state == "Snow") {
-        element.src = "images/snow.png";
-    }
+    const icons = {
+        Clouds: "images/cloud.png",
+        Clear: "images/clear.png",
+        Rain: "images/rain.png",
+        Drizzle: "images/drizzle.png",
+        Mist: "images/mist.png",
+        Snow: "images/snow.png",
+    };
+    element.src = icons[state];
 }
 
 // _________________________________ charts _________________________________
