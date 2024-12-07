@@ -8,6 +8,9 @@ const weather = document.querySelector(".weather_icon");
 const forecast = document.querySelector(".forecastData")
 
 async function getAPI(city) {
+    document.querySelector(".mainDiv").style.cssText = 'display: grid;';
+    document.querySelector(".waiting").style.cssText = 'display: none;';
+
     const result = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
     const data = await result.json();
     console.log(data);
@@ -68,6 +71,7 @@ function weatherIconDisplay(state, element) {
     }
 }
 
+// _________________________________ charts _________________________________
 let windChart = null;
 function windChartDisplay(speed) {
     if (windChart) {
@@ -136,6 +140,7 @@ function pressureChartDisplay(p) {
     document.querySelector("#pressureVal").innerHTML = `${p} pascal`
 }
 
+// __________________________________ Map __________________________________
 let mapInstance = null;
 function mapDisplay(lat, lon) {
     if (mapInstance) {
@@ -154,3 +159,4 @@ function mapDisplay(lat, lon) {
 
     L.marker([lat, lon]).addTo(mapInstance).openPopup();
 }
+

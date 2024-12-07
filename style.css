@@ -34,7 +34,7 @@ body{
 }
 
 .mainDiv{
-    display: grid;
+    display: none;
     grid-template-rows: repeat(2, minmax(0, 1fr));
     grid-template-columns: repeat(5, minmax(0, 1fr));
     padding: 2% 1% 0;
@@ -152,4 +152,19 @@ body{
     grid-column: span 2 / span 5;
     padding: 5% ;
     height: 250px;
+}
+
+.waiting{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 3%;
+    
+    h2{
+        margin-bottom: -2%;
+    }
+    img{
+        width: 35%;
+    }
 }
