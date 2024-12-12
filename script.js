@@ -9,9 +9,6 @@ const weather = document.querySelector(".weather_icon");
 const forecast = document.querySelector(".forecastData")
 
 async function getAPI(city=null, lat=null, lon=null) {
-    document.querySelector(".mainDiv").style.cssText = 'display: grid;';
-    document.querySelector(".waiting").style.cssText = 'display: none;';
-
     let result;
     if(city)
         result = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
@@ -59,6 +56,9 @@ async function getAPI(city=null, lat=null, lon=null) {
 
         forecast.appendChild(newElement);
     });
+
+    document.querySelector(".mainDiv").style.cssText = 'display: grid;';
+    document.querySelector(".waiting").style.cssText = 'display: none;';
 }
 
 searchBtn.addEventListener("click", () => {
