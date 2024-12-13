@@ -29,33 +29,40 @@ async function getAPI(city=null, lat=null, lon=null) {
     mapDisplay(data.coord.lat, data.coord.lon);
 
     let forecastRes;
-    if(city)
-        forecastRes = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&cnt=7&appid=${apiKey}&units=metric`);
+    if (city)
+        forecastRes = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`);
     else
-        forecastRes = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&cnt=7&appid=${apiKey}&units=metric`)
-    
+        forecastRes = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`);
+
     const forecastData = await forecastRes.json();
     console.log(forecastData);
-    
+
+    const timeTaken = '12:00:00';
+    const todayDate = new Date().toISOString().split('T')[0];
+
     forecast.innerHTML = "";
     forecastData.list.forEach(f => {
-        const newElement = document.createElement("div");
+        if (f.dt_txt.includes(timeTaken) && !f.dt_txt.includes(todayDate)) {
+            const newElement = document.createElement("div");
 
-        const icon = document.createElement("img");
-        weatherIconDisplay(f.weather[0].main, icon);
-        newElement.appendChild(icon);
+            const date = new Date(f.dt_txt);
+            const options = { weekday: 'long' }; 
+            const day = date.toLocaleDateString('en-US', options); 
+            const dayElement = document.createTextNode(day);
+            newElement.appendChild(dayElement);
 
-        const temp = document.createElement("b");
-        temp.innerHTML = `${f.main.temp}°C`;
-        newElement.appendChild(temp);
+            const icon = document.createElement("img");
+            weatherIconDisplay(f.weather[0].main, icon);
+            newElement.appendChild(icon);
 
-        const date = new Date(f.dt_txt);
-        const hours = date.getHours();
-        const time = document.createTextNode(`${hours}h`);
-        newElement.appendChild(time);
+            const temp = document.createElement("b");
+            temp.innerHTML = `${f.main.temp}°C`;
+            newElement.appendChild(temp);
 
-        forecast.appendChild(newElement);
+            forecast.appendChild(newElement);
+        }
     });
+
 
     document.querySelector(".mainDiv").style.cssText = 'display: grid;';
     document.querySelector(".waiting").style.cssText = 'display: none;';
@@ -64,6 +71,7 @@ async function getAPI(city=null, lat=null, lon=null) {
 searchBtn.addEventListener("click", () => {
     getAPI(cityValue.value);
 });
+
 locBtn.addEventListener("click", () => {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(currentPosition);

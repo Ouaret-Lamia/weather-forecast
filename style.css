@@ -132,17 +132,19 @@ body{
         padding: 0;
         display: flex;
         overflow: auto;
-        gap: .5%;
+        gap: 1%;
 
         div{
             display: flex; 
             flex-direction: column;
+            justify-content: space-between;
             background-color: #e7e7e785;
             margin: 0;
             padding: 3%;
             align-items: center;
             img{
                 width: 70px;
+                margin: 8% 0;
             }
         }
     }
