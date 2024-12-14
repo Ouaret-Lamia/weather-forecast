@@ -1,5 +1,14 @@
 body{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* padding: 0; */
+    margin: 0;
+    color: white;
+    background-image: url("images/img.jpg");
+    backdrop-filter: blur(6px);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 .searchDiv{
@@ -40,7 +49,9 @@ body{
     padding: 2% 1% 0;
 
     div{
-        background-color: #f6f6f6;
+        background-color: #16181f;
+        /* background-color: rgba(0, 0, 0, 0.2); */
+        /* backdrop-filter: blur(5px); */
         margin: 1%;
         border-radius: 10pt;
     }
@@ -55,7 +66,7 @@ body{
 
     div{
         padding: 0 8%;
-        background-color: #e7e7e785; 
+        background-color: #e7e7e70a; 
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -112,7 +123,7 @@ body{
 
     .weatherInfo{
         grid-column: span 1 / span 2;
-        background-color: #e7e7e785;
+        background-color: #e7e7e70a;
         padding: 6% 10%;
         display: flex;
         justify-content: space-evenly;
@@ -130,7 +141,8 @@ body{
     .forecastData{
         margin: 0;
         padding: 0;
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
         overflow: auto;
         gap: 1%;
 
@@ -138,9 +150,9 @@ body{
             display: flex; 
             flex-direction: column;
             justify-content: space-between;
-            background-color: #e7e7e785;
+            background-color: #e7e7e70a;
             margin: 0;
-            padding: 3%;
+            padding: 15% 5%;
             align-items: center;
             img{
                 width: 70px;
@@ -166,7 +178,8 @@ body{
     h2{
         margin-bottom: -2%;
     }
-    img{
+    iframe{
         width: 35%;
+        height: 450px;
     }
 }

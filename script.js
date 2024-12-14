@@ -37,6 +37,44 @@ async function getAPI(city=null, lat=null, lon=null) {
     const forecastData = await forecastRes.json();
     console.log(forecastData);
 
+    forecastFunction(forecastData);
+
+
+    document.querySelector(".mainDiv").style.cssText = 'display: grid;';
+    document.querySelector(".waiting").style.cssText = 'display: none;';
+}
+
+searchBtn.addEventListener("click", () => {
+    getAPI(cityValue.value);
+});
+
+locBtn.addEventListener("click", () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(currentPosition);
+    }
+})
+
+function currentPosition(position){
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+    getAPI(null,lat,lon);
+}
+
+
+async function weatherIconDisplay(state, element) {
+    const icons = {
+        Clouds: "images/cloud.png",
+        Clear: "images/clear.png",
+        Rain: "images/rain.png",
+        Drizzle: "images/drizzle.png",
+        Mist: "images/mist.png",
+        Snow: "images/snow.png",
+    };
+    element.src = icons[state];
+}
+
+// _________________________________ Forcast __________________________________
+async function forecastFunction(forecastData) {
     const timeTaken = '12:00:00';
     const todayDate = new Date().toISOString().split('T')[0];
 
@@ -62,44 +100,11 @@ async function getAPI(city=null, lat=null, lon=null) {
             forecast.appendChild(newElement);
         }
     });
-
-
-    document.querySelector(".mainDiv").style.cssText = 'display: grid;';
-    document.querySelector(".waiting").style.cssText = 'display: none;';
-}
-
-searchBtn.addEventListener("click", () => {
-    getAPI(cityValue.value);
-});
-
-locBtn.addEventListener("click", () => {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(currentPosition);
-    }
-})
-
-function currentPosition(position){
-    const lat = position.coords.latitude;
-    const lon = position.coords.longitude;
-    getAPI(null,lat,lon);
-}
-
-
-function weatherIconDisplay(state, element) {
-    const icons = {
-        Clouds: "images/cloud.png",
-        Clear: "images/clear.png",
-        Rain: "images/rain.png",
-        Drizzle: "images/drizzle.png",
-        Mist: "images/mist.png",
-        Snow: "images/snow.png",
-    };
-    element.src = icons[state];
 }
 
 // _________________________________ charts _________________________________
 let windChart = null;
-function windChartDisplay(speed) {
+async function windChartDisplay(speed) {
     if (windChart) {
         windChart.destroy();
     }
@@ -113,7 +118,7 @@ function windChartDisplay(speed) {
             datasets: [{
                 barThickness: 80,
                 data: windData,
-                backgroundColor: 'rgba(54, 162, 235, 0.4)',
+                backgroundColor: 'rgba(54, 163, 235, 0.76)',
                 borderColor: 'rgba(54, 162, 235)',
                 borderWidth: 1
             }]
@@ -121,21 +126,38 @@ function windChartDisplay(speed) {
         options: {
             plugins: {
                 legend: {
-                    display: false
+                    display: false,
+                    labels: {
+                        color: 'white' // Set legend text color to white
+                    }
                 }
             },
             scales: {
+                x: {
+                    ticks: {
+                        color: 'white' // Set x-axis ticks text color to white
+                    }
+                },
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    ticks: {
+                        color: 'white' // Set y-axis ticks text color to white
+                    }
+                }
+            },
+            elements: {
+                bar: {
+                    borderWidth: 2
                 }
             }
         }
-    });
+    }); 
+
     document.querySelector("#windSpeed").innerHTML = `${speed} km/h`;
 }
 
 let pressureChart = null;
-function pressureChartDisplay(p) {
+async function pressureChartDisplay(p) {
     if (pressureChart) {
         pressureChart.destroy();
     }
@@ -147,7 +169,7 @@ function pressureChartDisplay(p) {
             labels: ['Pressure'],
             datasets: [{
                 data: pressureData,
-                backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(201, 203, 207, 0.2)'],
+                backgroundColor: ['rgb(255, 99, 133)', 'rgba(201, 203, 207, 0.2)'],
                 hoverOffset: 4
             }]
         },
@@ -168,7 +190,7 @@ function pressureChartDisplay(p) {
 
 // __________________________________ Map __________________________________
 let mapInstance = null;
-function mapDisplay(lat, lon) {
+async function mapDisplay(lat, lon) {
     if (mapInstance) {
         mapInstance.remove();
     }

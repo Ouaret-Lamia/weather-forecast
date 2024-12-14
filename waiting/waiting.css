@@ -1,0 +1,28 @@
+.loader {
+    position: relative;
+    padding-top: 80%;
+}
+.load {
+    display: inline-block;
+    height: calc(var(--i) * 28);
+    width: calc(var(--i) * 28);
+    background-color: transparent;
+    position: absolute;
+    border-top: 5px #757F98 solid;
+    border-radius: 50%;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: turn 2s infinite linear;
+}
+
+.load:nth-child(odd) {
+    animation: turn 2s infinite linear reverse;
+}
+
+@keyframes turn {
+    100% {
+        transform: translate(-50%, -50%) rotateZ(360deg);
+    }
+}
+  
