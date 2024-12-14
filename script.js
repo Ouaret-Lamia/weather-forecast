@@ -13,7 +13,7 @@ async function getAPI(city=null, lat=null, lon=null) {
     if(city)
         result = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
     else
-        result = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`)
+        result = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
     const data = await result.json();
     console.log(data);
 
@@ -21,7 +21,7 @@ async function getAPI(city=null, lat=null, lon=null) {
     document.querySelector(".state").innerHTML = `<b>${data.weather[0].main}</b> in ${data.name}`;
     weatherIconDisplay(data.weather[0].main, weather);
     document.querySelector("#feelLike").innerHTML = `${data.main.feels_like}°C`;
-    document.querySelector("#humidity").innerHTML = `${data.main.humidity}`;
+    document.querySelector("#humidity").innerHTML = `${data.main.humidity} g/m3`;
 
     windChartDisplay(data.wind.speed);
     pressureChartDisplay(data.main.pressure);
@@ -163,6 +163,10 @@ async function pressureChartDisplay(p) {
     }
     const pressureData = [p, 5000 - p];
     const pressureCtx = document.getElementById('pressure').getContext('2d');
+
+    pressureCtx.canvas.width = 250; 
+    pressureCtx.canvas.height = 150;
+
     pressureChart = new Chart(pressureCtx, {
         type: 'doughnut',
         data: {
@@ -181,10 +185,11 @@ async function pressureChartDisplay(p) {
             },
             rotation: -90,
             circumference: 180,
-            responsive: false,
-            maintainAspectRatio: false
+            responsive: false, // Ensure responsive is false for static dimensions
+            maintainAspectRatio: false // Prevent default aspect ratio
         }
     });
+
     document.querySelector("#pressureVal").innerHTML = `${p} pascal`
 }
 
