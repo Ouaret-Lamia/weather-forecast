@@ -128,20 +128,20 @@ async function windChartDisplay(speed) {
                 legend: {
                     display: false,
                     labels: {
-                        color: 'white' // Set legend text color to white
+                        color: 'white'
                     }
                 }
             },
             scales: {
                 x: {
                     ticks: {
-                        color: 'white' // Set x-axis ticks text color to white
+                        color: 'white'
                     }
                 },
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        color: 'white' // Set y-axis ticks text color to white
+                        color: 'white'
                     }
                 }
             },
@@ -185,8 +185,8 @@ async function pressureChartDisplay(p) {
             },
             rotation: -90,
             circumference: 180,
-            responsive: false, // Ensure responsive is false for static dimensions
-            maintainAspectRatio: false // Prevent default aspect ratio
+            responsive: false, 
+            maintainAspectRatio: false
         }
     });
 
