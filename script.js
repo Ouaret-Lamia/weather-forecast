@@ -75,7 +75,7 @@ async function weatherIconDisplay(state, element) {
 
 // _________________________________ Forcast __________________________________
 async function forecastFunction(forecastData) {
-    const timeTaken = '12:00:00';
+    const timeTaken = '00:00:00';
     const todayDate = new Date().toISOString().split('T')[0];
 
     forecast.innerHTML = "";
