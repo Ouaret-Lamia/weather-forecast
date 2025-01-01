@@ -73,19 +73,25 @@ async function weatherIconDisplay(state, element) {
     element.src = icons[state];
 }
 
-// _________________________________ Forcast __________________________________
+// _________________________________ Forecast __________________________________
 async function forecastFunction(forecastData) {
     const timeTaken = '00:00:00';
     const todayDate = new Date().toISOString().split('T')[0];
 
     forecast.innerHTML = "";
+
+    const windSpeeds = [];
+    const labels = [];
+
     forecastData.list.forEach(f => {
+        const date = new Date(f.dt_txt);
+
+        // Build the weekly forecast
         if (f.dt_txt.includes(timeTaken) && !f.dt_txt.includes(todayDate)) {
             const newElement = document.createElement("div");
 
-            const date = new Date(f.dt_txt);
-            const options = { weekday: 'long' }; 
-            const day = date.toLocaleDateString('en-US', options); 
+            const options = { weekday: 'long' };
+            const day = date.toLocaleDateString('en-US', options);
             const dayElement = document.createTextNode(day);
             newElement.appendChild(dayElement);
 
@@ -99,28 +105,36 @@ async function forecastFunction(forecastData) {
 
             forecast.appendChild(newElement);
         }
+
+        
+        if (windSpeeds.length < 5) {
+            labels.push(date.toLocaleTimeString('en-US', { hour: '2-digit'}));
+            windSpeeds.push(f.wind.speed);
+        }
     });
+
+    windChartDisplay(windSpeeds, labels);
 }
+
 
 // _________________________________ charts _________________________________
 let windChart = null;
-async function windChartDisplay(speed) {
+async function windChartDisplay(windSpeeds, labels) {
     if (windChart) {
         windChart.destroy();
     }
-    const labels = ['Speed'];
-    const windData = [speed];
-    const windCtx = document.getElementById('wind');
+    const windCtx = document.getElementById('wind').getContext('2d');
+
     windChart = new Chart(windCtx, {
-        type: 'bar',
+        type: 'line',
         data: {
             labels: labels,
             datasets: [{
-                barThickness: 80,
-                data: windData,
-                backgroundColor: 'rgba(54, 163, 235, 0.76)',
-                borderColor: 'rgba(54, 162, 235)',
-                borderWidth: 1
+                label: 'Wind Speed (km/h)',
+                data: windSpeeds,
+                borderColor: 'rgb(255, 99, 133)',
+                borderWidth: 2,
+                tension: 0.4 
             }]
         },
         options: {
@@ -145,15 +159,10 @@ async function windChartDisplay(speed) {
                     }
                 }
             },
-            elements: {
-                bar: {
-                    borderWidth: 2
-                }
-            }
         }
-    }); 
+    });
 
-    document.querySelector("#windSpeed").innerHTML = `${speed} km/h`;
+    document.querySelector("#windSpeed").innerHTML = `${windSpeeds[0]} km/h`
 }
 
 let pressureChart = null;
