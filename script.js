@@ -23,7 +23,6 @@ async function getAPI(city=null, lat=null, lon=null) {
     document.querySelector("#feelLike").innerHTML = `${data.main.feels_like}°C`;
     document.querySelector("#humidity").innerHTML = `${data.main.humidity} g/m3`;
 
-    windChartDisplay(data.wind.speed);
     pressureChartDisplay(data.main.pressure);
 
     mapDisplay(data.coord.lat, data.coord.lon);
