@@ -38,7 +38,6 @@ async function getAPI(city=null, lat=null, lon=null) {
 
     forecastFunction(forecastData);
 
-
     document.querySelector(".mainDiv").style.cssText = 'display: grid;';
     document.querySelector(".waiting").style.cssText = 'display: none;';
 }
