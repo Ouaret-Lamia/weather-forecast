@@ -58,7 +58,6 @@ function currentPosition(position){
     getAPI(null,lat,lon);
 }
 
-
 async function weatherIconDisplay(state, element) {
     const icons = {
         Clouds: "images/cloud.png",
@@ -71,12 +70,11 @@ async function weatherIconDisplay(state, element) {
     element.src = icons[state];
 }
 
-// _________________________________ Forecast __________________________________
+// _________________________________ Forecast ____________________________________
 async function forecastFunction(forecastData) {
     const timeTaken = '00:00:00';
     const todayDate = new Date().toISOString().split('T')[0];
     console.log(`today: ${todayDate}`);
-    
 
     forecast.innerHTML = "";
 
@@ -86,7 +84,6 @@ async function forecastFunction(forecastData) {
     forecastData.list.forEach(f => {
         const date = new Date(f.dt_txt);
 
-        // Build the weekly forecast
         if (f.dt_txt.includes(timeTaken) && !f.dt_txt.includes(todayDate)) {
             const newElement = document.createElement("div");
 
@@ -106,7 +103,6 @@ async function forecastFunction(forecastData) {
             forecast.appendChild(newElement);
         }
 
-        
         if (windSpeeds.length < 5) {
             labels.push(date.toLocaleTimeString('en-US', { hour: '2-digit'}));
             windSpeeds.push(f.wind.speed);
@@ -115,7 +111,6 @@ async function forecastFunction(forecastData) {
 
     windChartDisplay(windSpeeds, labels);
 }
-
 
 // _________________________________ charts _________________________________
 let windChart = null;
